@@ -1,0 +1,24 @@
+type Query {
+    hello: String
+    userById(id: ID!): User
+    trainById(id: Int): Train
+    allTrains: [Train]
+    trainsByFromTo(from_station: Int, to_station: Int): [Train]
+    trainsByFrom(from_station: Int): [Train]
+    trainsByTo(to_station: Int): [Train]
+    trainsByFromToDate(from_station: Int, to_station: Int, start_date: String): [Train]
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+}
+
+type Train {
+    id: ID!
+    name: String
+    from_station: Int
+    to_station: Int
+    start_date: String
+}

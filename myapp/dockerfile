@@ -1,0 +1,18 @@
+# Use Node image
+FROM node:23-slim AS build
+
+WORKDIR /myapp
+
+# Only copy package.json and package-lock.json first
+COPY package*.json ./
+
+# Install dependencies inside container
+RUN npm install
+
+# Now copy the rest of your Angular app
+COPY . .
+
+# serve the app in develment mode
+EXPOSE 4200
+
+CMD ["npx", "ng", "serve", "--host", "0.0.0.0"]

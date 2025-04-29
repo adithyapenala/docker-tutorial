@@ -1,0 +1,15 @@
+create table bookings (id INT AUTO_INCREMENT PRIMARY KEY, userid INT ,from_station INT , destination INT , trainid INT , boarding_date date, no_of_passengers INT, FOREIGN KEY(from_station) REFERENCES station(id),FOREIGN KEY(destination) REFERENCES station(id), FOREIGN KEY(trainid) REFERENCES train(id), FOREIGN KEY(userid) REFERENCES user(id) );
+
+ CREATE TABLE train (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       name TEXT NOT NULL,
+       from_station INT,
+       to_station INT,
+       start_date DATE,
+       FOREIGN KEY (from_station) REFERENCES station(id),
+       FOREIGN KEY (to_station) REFERENCES station(id)
+   );
+
+create table station (id INT AUTO_INCREMENT PRIMARY KEY, name TEXT not null, code VARCHAR(10) UNIQUE, region TEXT not null, state TEXT );
+
+ create table user (id INT AUTO_INCREMENT PRIMARY KEY, name TEXT NOT NULL, password TEXT NOT NULL, email TEXT, phone TEXT);

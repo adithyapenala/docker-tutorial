@@ -1,0 +1,129 @@
+
+services:
+  frontend:
+    build:
+      context: ./myapp
+    ports:
+      - "4200:80"
+    # depends_on:
+    #   - graphql_gateway
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 256M
+    networks:
+      - skynet
+    
+
+  backend:
+    build:
+      context: ./flask-backend
+    ports:
+      - "5000:5000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 256M
+    networks:
+      - skynet
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  dj_backend:
+    build:
+      context: ./dj-back
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 256M
+    networks:
+      - skynet
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  spring_backend:
+    build:
+      context: ./springbackend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 256M
+    depends_on:
+      - db
+    networks:
+      - skynet
+
+  # graphql_gateway:
+  #   build:
+  #     context: ./graphql-gateway
+  #   ports:
+  #     - "4000:4000"
+  #   depends_on:
+  #     - backend
+  #     - dj_backend
+  #     - spring_backend
+  #   env_file:
+  #     - .env
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: 512M
+  #       reservations:
+  #         cpus: '0.1'
+  #         memory: 128M
+  #   networks:
+  #     - skynet
+
+  db:
+      image: mysql:latest
+      restart: always
+      deploy:
+        replicas: 2
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: irctc
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+      ports:
+        - "3306:3306"  # expose if you want to connect externally (optional)
+      volumes:
+        - db_data:/var/lib/mysql
+      networks:
+        - skynet
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  skynet:
+    driver: bridge

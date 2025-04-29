@@ -1,0 +1,25 @@
+
+<div>
+    <form>  
+        <input type="text" placeholder="enter community certificate number"
+        *ngIf="toggleCerts" pattern="[a-zA-Z0-9]+">
+        <input type="text" placeholder="enter income certificate number" 
+        *ngIf="!toggleCerts" pattern="[a-zA-Z0-9]+">
+        <br>
+        <button type="button" class="btn btn-primary" (click)="toggleCert()">change certificate</button>
+        <br>
+        <button type="button" class="btn btn-primary">search</button>
+    </form>    
+</div>
+
+<p> {{ response }} </p>
+<!-- 
+<div>
+    <table>
+        <tr>
+            <th> key </th>
+            <th> value </th>
+        </tr>
+        
+    </table>
+</div> -->

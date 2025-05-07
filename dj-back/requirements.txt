@@ -1,1 +1,11 @@
+Werkzeug
 django
+graphene-django
+python-decouple
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+django-extensions
+mysqlclient
+pyopenssl
+dotenv

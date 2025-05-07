@@ -1,8 +1,35 @@
-FROM python:3.13-alpine
+FROM python:3.13-slim
+
 WORKDIR /dj-back
 COPY . .
+
+RUN apt-get update && apt-get install -y \
+    default-libmysqlclient-dev \
+    build-essential \
+    pkg-config \
+    gcc \
+    python3-dev \
+    libssl-dev \
+    libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN pip install -r requirements.txt
 
-EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# RUN apt-get update && \
+#     apt-get install -y curl libnss3-tools ca-certificates && \
+#     curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64" && \
+#     chmod +x mkcert-v*-linux-amd64 && \
+#     mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
 
+# COPY entrypoint.sh /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
+
+ENV DJANGO_SETTINGS_MODULE=dj_app.settings
+
+EXPOSE 8000
+
+# ENTRYPOINT ["/entrypoint.sh"]
+CMD ["python", "manage.py", "runserver_plus", "0.0.0.0:8000", "--cert-file", "ec_cert.pem", "--key-file", "ec_key.pem"]
+
+
+# CMD ["python", "manage.py", "runserver_plus", "--cert-file", "ec_combined.pem"]

@@ -15,8 +15,6 @@ class BookingSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Booking.objects.create(**validated_data)
     
-    
-    
     def update(self, instance, validated_data):
         instance.userid = validated_data.get('userid', instance.userid)
         instance.from_station = validated_data.get('from_station', instance.from_station)
